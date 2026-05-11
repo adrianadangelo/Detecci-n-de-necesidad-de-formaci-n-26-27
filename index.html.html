@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DNA 2025–2026 · Detección de Necesidades de Formación</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#001E62;--navy2:#0a2d7a;--blue:#418FDE;--blue-lt:#6aaee8;--blue-faint:#e8f3fc;--gold:#F5A623;--white:#ffffff;--off:#f5f7fc;--border:#dde4f0;--text:#0d1b3e;--muted:#5a6a8a;--light:#9aaabf;--green:#1a9e6a;--green-bg:#eaf7f1;--red:#e03e3e;--red-bg:#fdeaea;--r:12px;--r-sm:8px;--r-lg:20px;--sh:0 4px 24px rgba(0,30,98,.10);--sh-lg:0 12px 48px rgba(0,30,98,.18);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--text);min-height:100vh;}
+.nav{background:var(--navy);height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;position:sticky;top:0;z-index:200;box-shadow:0 2px 16px rgba(0,0,0,.28);}
+.nav-logo{font-family:'DM Serif Display',serif;color:#fff;font-size:1.05rem;}
+.nav-logo span{color:var(--blue-lt);}
+.nav-right{font-size:.72rem;color:rgba(255,255,255,.45);letter-spacing:.07em;text-transform:uppercase;}
+.nav-cedula{font-size:.8rem;color:rgba(255,255,255,.75);background:rgba(255,255,255,.1);padding:4px 12px;border-radius:99px;border:1px solid rgba(255,255,255,.15);}
+.prog-wrap{background:var(--navy);padding:0 2rem 12px;}
+.prog-steps{display:flex;gap:4px;}
+.prog-step{height:4px;flex:1;border-radius:2px;background:rgba(255,255,255,.15);transition:background .3s;}
+.prog-step.done{background:var(--blue);}
+.prog-step.active{background:var(--gold);}
+.prog-label{font-size:.72rem;color:rgba(255,255,255,.45);margin-top:6px;letter-spacing:.04em;}
+.screen{display:none;animation:fadeUp .35s ease both;}
+.screen.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+/* LOGIN */
+.login-wrap{min-height:calc(100vh - 58px);display:flex;align-items:center;justify-content:center;padding:2rem;}
+.login-card{background:var(--white);border-radius:var(--r-lg);box-shadow:var(--sh-lg);width:100%;max-width:480px;overflow:hidden;}
+.login-hero{background:var(--navy);padding:2.5rem 2.5rem 2rem;position:relative;overflow:hidden;}
+.login-hero::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:rgba(65,143,222,.15);}
+.login-hero::after{content:'';position:absolute;bottom:-30px;left:-20px;width:120px;height:120px;border-radius:50%;background:rgba(245,166,35,.08);}
+.login-title{font-family:'DM Serif Display',serif;font-size:1.75rem;color:#fff;line-height:1.2;position:relative;z-index:1;}
+.login-sub{font-size:.85rem;color:rgba(255,255,255,.55);margin-top:.5rem;line-height:1.5;position:relative;z-index:1;}
+.login-year{display:inline-block;background:var(--gold);color:var(--navy);font-size:.7rem;font-weight:600;padding:3px 10px;border-radius:99px;margin-bottom:.75rem;letter-spacing:.06em;}
+.login-body{padding:2rem 2.5rem 2.5rem;}
+.field-label{font-size:.78rem;font-weight:600;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:.4rem;display:block;}
+.field-input{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:var(--r-sm);font-family:'DM Sans',sans-serif;font-size:1rem;color:var(--text);background:var(--white);transition:border .2s,box-shadow .2s;outline:none;}
+.field-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(65,143,222,.12);}
+.field-input.big{font-size:1.4rem;font-weight:600;letter-spacing:.1em;text-align:center;}
+.field-hint{font-size:.75rem;color:var(--light);margin-top:.4rem;}
+.msg-box{border-radius:var(--r-sm);padding:10px 14px;font-size:.83rem;margin-top:.75rem;display:none;}
+.msg-error{background:var(--red-bg);border:1px solid rgba(224,62,62,.25);color:var(--red);}
+.msg-warn{background:#fff8e6;border:1px solid rgba(245,166,35,.35);color:#7a5200;}
+.msg-ok{background:var(--green-bg);border:1px solid rgba(26,158,106,.25);color:var(--green);}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-radius:var(--r-sm);font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;cursor:pointer;border:none;transition:all .2s;letter-spacing:.01em;}
+.btn-primary{background:var(--navy);color:#fff;width:100%;margin-top:1.25rem;}
+.btn-primary:hover{background:var(--navy2);transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,30,98,.25);}
+.btn-outline{background:transparent;color:var(--navy);border:1.5px solid var(--border);}
+.btn-outline:hover{border-color:var(--blue);color:var(--blue);}
+.btn-blue{background:var(--blue);color:#fff;}
+.btn-blue:hover{background:#2d7cbf;}
+.btn-sm{padding:8px 16px;font-size:.82rem;}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border);}
+.btn-ghost:hover{background:var(--off);}
+/* SURVEY */
+.survey-layout{max-width:780px;margin:0 auto;padding:2rem 1.5rem 4rem;}
+.section-header{background:var(--navy);border-radius:var(--r) var(--r) 0 0;padding:1.25rem 1.75rem;display:flex;align-items:center;gap:14px;}
+.section-num{background:var(--gold);color:var(--navy);font-size:.75rem;font-weight:700;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.section-title{font-family:'DM Serif Display',serif;color:#fff;font-size:1.2rem;}
+.section-sub{font-size:.78rem;color:rgba(255,255,255,.5);margin-top:2px;}
+.section-body{background:var(--white);border-radius:0 0 var(--r) var(--r);padding:1.75rem;box-shadow:var(--sh);margin-bottom:1.5rem;}
+.form-group{margin-bottom:1.4rem;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.4rem;}
+.q-label{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.5rem;display:block;line-height:1.4;}
+.q-label .q-num{color:var(--blue);font-weight:700;margin-right:.3rem;}
+.q-hint{font-size:.75rem;color:var(--muted);font-style:italic;margin-bottom:.5rem;display:block;}
+.sel{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--r-sm);font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text);background:var(--white);outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a6a8a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px;}
+.sel:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(65,143,222,.12);}
+.textarea{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:var(--r-sm);font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--text);background:var(--white);resize:vertical;min-height:96px;outline:none;line-height:1.6;}
+.textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(65,143,222,.12);}
+/* LIKERT */
+.likert-block{border:1px solid var(--border);border-radius:var(--r-sm);overflow:hidden;margin-top:.5rem;}
+.likert-head{display:grid;grid-template-columns:1fr repeat(5,52px);background:var(--navy);padding:8px 14px;}
+.likert-head-label{font-size:.72rem;color:rgba(255,255,255,.6);font-weight:500;}
+.likert-head-num{font-size:.8rem;color:var(--blue-lt);font-weight:600;text-align:center;}
+.likert-scale-row{display:flex;justify-content:space-between;padding:4px 14px;background:var(--blue-faint);}
+.likert-scale-row span{font-size:.69rem;color:var(--blue);font-style:italic;}
+.likert-row{display:grid;grid-template-columns:1fr repeat(5,52px);padding:10px 14px;align-items:center;border-top:1px solid var(--border);transition:background .15s;}
+.likert-row:hover{background:var(--off);}
+.likert-row:nth-child(even){background:#fafbff;}
+.likert-item-label{font-size:.84rem;color:var(--text);line-height:1.35;padding-right:8px;}
+.likert-cell{display:flex;align-items:center;justify-content:center;}
+.likert-radio{appearance:none;-webkit-appearance:none;width:20px;height:20px;border:2px solid var(--border);border-radius:50%;cursor:pointer;transition:all .15s;background:var(--white);}
+.likert-radio:hover{border-color:var(--blue-lt);}
+.likert-radio:checked{border-color:var(--blue);background:var(--blue);box-shadow:inset 0 0 0 3px #fff;}
+/* CHECKBOX */
+.check-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:.5rem;}
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--r-sm);cursor:pointer;transition:all .15s;user-select:none;}
+.check-item:hover{border-color:var(--blue-lt);background:var(--blue-faint);}
+.check-item.checked{border-color:var(--blue);background:var(--blue-faint);}
+.check-box{width:18px;height:18px;min-width:18px;border:2px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .15s;background:var(--white);}
+.check-item.checked .check-box{background:var(--blue);border-color:var(--blue);}
+.check-box svg{display:none;}
+.check-item.checked .check-box svg{display:block;}
+.check-label{font-size:.83rem;color:var(--text);line-height:1.35;}
+/* RADIO LIST */
+.radio-list{display:flex;flex-direction:column;gap:8px;margin-top:.5rem;}
+.radio-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--r-sm);cursor:pointer;transition:all .15s;user-select:none;}
+.radio-item:hover{border-color:var(--blue-lt);background:var(--blue-faint);}
+.radio-item.selected{border-color:var(--blue);background:var(--blue-faint);}
+.radio-dot{width:18px;height:18px;min-width:18px;border:2px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .15s;background:var(--white);}
+.radio-item.selected .radio-dot{border-color:var(--blue);background:var(--blue);box-shadow:inset 0 0 0 4px #fff;}
+.radio-label{font-size:.84rem;color:var(--text);line-height:1.35;}
+/* HOURS */
+.hours-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:.5rem;}
+.hour-btn{padding:8px 18px;border:1.5px solid var(--border);border-radius:99px;font-size:.83rem;cursor:pointer;transition:all .15s;background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;}
+.hour-btn:hover{border-color:var(--blue);}
+.hour-btn.selected{background:var(--navy);color:#fff;border-color:var(--navy);}
+.info-box{background:var(--blue-faint);border-left:3px solid var(--blue);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:10px 14px;font-size:.82rem;color:var(--navy2);line-height:1.5;margin-bottom:1.25rem;font-style:italic;}
+.divider{height:1px;background:var(--border);margin:1.5rem 0;}
+.sub-heading{font-size:.75rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--blue);margin-bottom:1rem;display:flex;align-items:center;gap:8px;}
+.sub-heading::after{content:'';flex:1;height:1px;background:var(--blue-faint);}
+.nav-btns{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);}
+/* RESULT */
+.result-hero{background:var(--navy);border-radius:var(--r-lg) var(--r-lg) 0 0;padding:2.5rem 2rem;text-align:center;position:relative;overflow:hidden;}
+.result-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:rgba(65,143,222,.12);}
+.result-title{font-family:'DM Serif Display',serif;color:#fff;font-size:1.8rem;position:relative;z-index:1;}
+.result-sub{color:rgba(255,255,255,.55);font-size:.88rem;margin-top:.5rem;position:relative;z-index:1;}
+.result-body{background:var(--white);border-radius:0 0 var(--r-lg) var(--r-lg);padding:2rem;box-shadow:var(--sh-lg);margin-bottom:2rem;}
+.metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.5rem;}
+.metric-card{background:var(--off);border-radius:var(--r-sm);padding:1rem;text-align:center;}
+.metric-val{font-family:'DM Serif Display',serif;font-size:1.8rem;color:var(--navy);}
+.metric-val span{font-size:.85rem;color:var(--light);font-family:'DM Sans',sans-serif;}
+.metric-label{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:4px;}
+.score-bar-wrap{height:5px;background:var(--border);border-radius:3px;margin-top:8px;}
+.score-bar-fill{height:5px;border-radius:3px;background:var(--blue);transition:width .8s ease;}
+.gaps-section{margin-bottom:1.5rem;}
+.gaps-title{font-size:.8rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem;display:flex;align-items:center;gap:6px;}
+.gap-dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+.tag-cloud{display:flex;flex-wrap:wrap;gap:7px;}
+.tag{padding:5px 12px;border-radius:99px;font-size:.78rem;font-weight:500;}
+.tag-red{background:#fdeaea;color:#9b2020;border:1px solid #f5c0c0;}
+.tag-amber{background:#fff3dc;color:#7a4f00;border:1px solid #fdd98a;}
+.tag-blue{background:var(--blue-faint);color:#1a4f8a;border:1px solid #b8d7f5;}
+.tag-green{background:var(--green-bg);color:#0e6047;border:1px solid #a3dccc;}
+.thankyou-box{background:var(--navy);border-radius:var(--r);padding:1.25rem 1.5rem;text-align:center;color:rgba(255,255,255,.7);font-size:.88rem;line-height:1.6;font-style:italic;margin-top:1.5rem;}
+/* ADMIN */
+.admin-wrap{max-width:960px;margin:0 auto;padding:2rem 1.5rem 4rem;}
+.admin-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:10px;}
+.admin-title{font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--navy);}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.5rem;}
+.stat-card{background:var(--white);border-radius:var(--r);padding:1.25rem;box-shadow:var(--sh);border-left:3px solid var(--blue);}
+.stat-val{font-size:1.8rem;font-weight:600;color:var(--navy);}
+.stat-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:2px;}
+.table-wrap{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;}
+.table-head{background:var(--navy);display:grid;grid-template-columns:120px 1fr 160px 120px 90px 90px;padding:10px 16px;gap:8px;}
+.th{font-size:.72rem;color:rgba(255,255,255,.65);font-weight:500;text-transform:uppercase;letter-spacing:.05em;}
+.table-row{display:grid;grid-template-columns:120px 1fr 160px 120px 90px 90px;padding:12px 16px;gap:8px;border-top:1px solid var(--border);align-items:center;transition:background .15s;cursor:pointer;}
+.table-row:hover{background:var(--blue-faint);}
+.td{font-size:.83rem;color:var(--text);}
+.td-muted{font-size:.78rem;color:var(--muted);}
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:99px;font-size:.72rem;font-weight:600;}
+.badge-green{background:var(--green-bg);color:var(--green);}
+.badge-navy{background:rgba(0,30,98,.08);color:var(--navy);}
+.filter-row{display:flex;gap:10px;margin-bottom:1rem;flex-wrap:wrap;}
+.filter-sel{padding:8px 14px;border:1.5px solid var(--border);border-radius:var(--r-sm);font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--text);background:var(--white);outline:none;cursor:pointer;}
+.filter-sel:focus{border-color:var(--blue);}
+.empty-state{text-align:center;padding:3rem 2rem;color:var(--muted);}
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;align-items:center;justify-content:center;padding:1rem;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--white);border-radius:var(--r-lg);width:100%;max-width:640px;max-height:88vh;overflow-y:auto;box-shadow:var(--sh-lg);}
+.modal-head{background:var(--navy);padding:1.25rem 1.5rem;display:flex;justify-content:space-between;align-items:center;border-radius:var(--r-lg) var(--r-lg) 0 0;position:sticky;top:0;z-index:1;}
+.modal-head-title{font-family:'DM Serif Display',serif;color:#fff;font-size:1.1rem;}
+.modal-close{background:rgba(255,255,255,.1);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;}
+.modal-close:hover{background:rgba(255,255,255,.2);}
+.modal-body{padding:1.5rem;}
+.modal-section{margin-bottom:1.4rem;}
+.modal-sec-title{font-size:.73rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--blue);margin-bottom:.75rem;padding-bottom:.4rem;border-bottom:1px solid var(--blue-faint);}
+.detail-row{display:flex;justify-content:space-between;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--border);}
+.detail-key{font-size:.8rem;color:var(--muted);flex-shrink:0;margin-right:1rem;}
+.detail-val{font-size:.8rem;color:var(--text);font-weight:500;text-align:right;word-break:break-word;max-width:60%;}
+.detail-val.good{color:var(--green);}
+.detail-val.bad{color:var(--red);}
+.chip-list{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
+.chip{padding:3px 9px;background:var(--off);border:1px solid var(--border);border-radius:99px;font-size:.74rem;color:var(--text);}
+@media(max-width:640px){
+  .form-row{grid-template-columns:1fr;}
+  .check-grid{grid-template-columns:1fr;}
+  .metrics-row,.stats-row{grid-template-columns:1fr 1fr;}
+  .table-head,.table-row{grid-template-columns:100px 1fr 90px 70px;}
+  .table-head>.th:nth-child(n+5),.table-row>.td:nth-child(n+5){display:none;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="topnav">
+  <div class="nav-logo">DNA <span>2025–2026</span></div>
+  <div id="nav-right" class="nav-right">Formación y Desarrollo · RRHH</div>
+</nav>
+<div class="prog-wrap" id="prog-wrap" style="display:none">
+  <div class="prog-steps" id="prog-steps"></div>
+  <div class="prog-label" id="prog-label"></div>
+</div>
+
+<!-- ══ LOGIN ══ -->
+<div class="screen active" id="screen-login">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-hero">
+        <div class="login-year">AÑO FISCAL 2025–2026</div>
+        <div class="login-title">Detección de<br>Necesidades de<br>Formación</div>
+        <div class="login-sub">Ingresa tu correo corporativo para comenzar. Tu participación construye el plan formativo de la empresa.</div>
+      </div>
+      <div class="login-body">
+        <label class="field-label" for="inp-ced">Correo corporativo</label>
+        <input class="field-input" type="text" id="inp-ced" placeholder="tunombre@farmatodo.com" autocomplete="off" style="font-size:1rem;letter-spacing:0">
+        <div class="field-hint">Ingresa tu correo corporativo @farmatodo.com</div>
+        <div class="msg-box msg-error" id="msg-error">Ingresa un correo válido con dominio @farmatodo.com</div>
+        <div class="msg-box msg-warn" id="msg-warn">Ya respondiste este cuestionario. Puedes actualizarlo enviando de nuevo.</div>
+        <button class="btn btn-primary" id="btn-login">Ingresar al cuestionario →</button>
+        <div style="text-align:center;margin-top:1rem">
+          <button class="btn btn-ghost btn-sm" onclick="openAdminLogin()">Acceso administrador</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SURVEY ══ -->
+<div class="screen" id="screen-survey">
+<div class="survey-layout">
+
+  <!-- S1 -->
+  <div id="sec-1" class="ssec">
+    <div class="section-header"><div class="section-num">1</div><div><div class="section-title">Datos de identificación</div><div class="section-sub">Información básica del colaborador</div></div></div>
+    <div class="section-body">
+      <div class="form-row">
+        <div class="form-group"><label class="q-label">Nombre completo</label><input class="field-input" id="f-nombre" type="text" placeholder="Tu nombre y apellidos"></div>
+        <div class="form-group"><label class="q-label">Correo corporativo</label><input class="field-input" id="f-cedula" type="text" readonly style="background:var(--off);color:var(--muted)"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="q-label">Unidad de negocio</label>
+          <select class="sel" id="f-unidad">
+            <option value="">Selecciona</option>
+            <option>VP RRHH</option><option>VP Comercial</option><option>VP Finanzas</option><option>VP Cadena de Suministro</option><option>VP Operaciones</option><option>VP TI</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="q-label">Nivel de cargo</label>
+          <select class="sel" id="f-nivel">
+            <option value="">Selecciona</option>
+            <option>Director/a</option><option>Gerente</option><option>Coordinador/a</option><option>Especialista</option><option>Analista</option><option>Trainee</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="q-label">Nombre del puesto</label><input class="field-input" id="f-puesto" type="text" placeholder="Ej. Analista de Categorías"></div>
+      </div>
+      <div class="nav-btns"><span></span><button class="btn btn-primary" onclick="goSec(3)">Siguiente →</button></div>
+    </div>
+  </div>
+
+  <!-- S3 FORMACIONES -->
+  <div id="sec-3" class="ssec" style="display:none">
+    <div class="section-header"><div class="section-num">2</div><div><div class="section-title">Interés en formación</div><div class="section-sub">¿En qué temas te gustaría formarte el próximo año?</div></div></div>
+    <div class="section-body">
+      <div class="info-box"><strong>1</strong> = No me interesa / no lo necesito &nbsp;·&nbsp; <strong>3</strong> = Me interesa moderadamente &nbsp;·&nbsp; <strong>5</strong> = Muy interesado/a, es una prioridad para mí</div>
+      <div class="sub-heading">A. Comunicación e interpersonal</div>
+      <div id="lt-interp"></div>
+      <div class="divider"></div>
+      <div class="sub-heading">B. Desarrollo personal y pensamiento</div>
+      <div id="lt-gest"></div>
+      <div class="divider"></div>
+      <div class="sub-heading">C. Liderazgo y gestión de personas (Coordinador, Gerente, Director)</div>
+      <div id="lt-lider"></div>
+      <div class="divider"></div>
+      <div class="form-group"><label class="q-label"><span class="q-num">2.1</span>¿Hay algún otro tema de formación que te interese y no esté en la lista?</label><textarea class="textarea" id="f-reto" placeholder="Describe los temas adicionales que te gustaría aprender..."></textarea></div>
+      <div class="nav-btns"><button class="btn btn-ghost" onclick="goSec(1)">← Anterior</button><button class="btn btn-primary" onclick="goSec(4)">Siguiente →</button></div>
+    </div>
+  </div>
+
+  <!-- S4 APRENDIZAJE -->
+  <div id="sec-4" class="ssec" style="display:none">
+    <div class="section-header"><div class="section-num">3</div><div><div class="section-title">Preferencias de aprendizaje</div><div class="section-sub">Cómo y cuándo te gusta formarte</div></div></div>
+    <div class="section-body">
+      <div class="form-group"><label class="q-label"><span class="q-num">4.1</span>¿Qué modalidades prefieres? <span style="font-weight:400;color:var(--muted)">(Hasta 3 opciones)</span></label><div class="check-grid" id="cg-modal"></div></div>
+      <div class="divider"></div>
+      <div class="form-group"><label class="q-label"><span class="q-num">4.2</span>Duración ideal por sesión</label><div class="radio-list" id="rl-dur"></div></div>
+      <div class="divider"></div>
+      <div class="form-group"><label class="q-label"><span class="q-num">4.3</span>¿Cuándo tienes mayor disponibilidad?</label><div class="check-grid" id="cg-disp"></div></div>
+      <div class="divider"></div>
+      <div class="form-group"><label class="q-label"><span class="q-num">4.4</span>Horas al mes disponibles para formación</label><div class="hours-grid" id="hg-horas"></div></div>
+      <div class="divider"></div>
+      <div class="form-group"><label class="q-label"><span class="q-num">4.5</span>Obstáculos para aprovechar al máximo las formaciones</label><div class="check-grid" id="cg-obs"></div></div>
+      <div class="nav-btns"><button class="btn btn-ghost" onclick="goSec(3)">← Anterior</button><button class="btn btn-primary" onclick="goSec(5)">Siguiente →</button></div>
+    </div>
+  </div>
+
+  <!-- S5 METAS -->
+  <div id="sec-5" class="ssec" style="display:none">
+    <div class="section-header"><div class="section-num">4</div><div><div class="section-title">Objetivos de desarrollo</div><div class="section-sub">¿Hacia dónde quieres crecer el próximo año?</div></div></div>
+    <div class="section-body">
+      <div class="form-group"><label class="q-label"><span class="q-num">4.1</span>¿Cuál es tu principal objetivo de desarrollo para el próximo año?</label><div class="radio-list" id="rl-obj"></div></div>
+      <div class="divider"></div>
+      <div class="form-group"><label class="q-label"><span class="q-num">4.3</span>¿Qué formaciones crees que necesita tu equipo para el próximo año?</label><span class="q-hint">Responde si eres Coordinador/a, Gerente o Director/a</span><textarea class="textarea" id="f-brechas" placeholder="¿En qué temas necesita formarse tu equipo para alcanzar los objetivos del área?"></textarea></div>
+      <div class="nav-btns"><button class="btn btn-ghost" onclick="goSec(4)">← Anterior</button><button class="btn btn-primary" onclick="goSec(7)">Siguiente →</button></div>
+    </div>
+  </div>
+
+
+  <!-- S7 SUGERENCIAS -->
+  <div id="sec-7" class="ssec" style="display:none">
+    <div class="section-header"><div class="section-num">6</div><div><div class="section-title">Sugerencias y compromisos</div><div class="section-sub">Tu aporte directo para diseñar el plan formativo</div></div></div>
+    <div class="section-body">
+      <div class="form-group"><label class="q-label"><span class="q-num">7.3</span>Comentarios adicionales para el área de Formación y Desarrollo</label><textarea class="textarea" id="f-coment" placeholder="Cualquier comentario o sugerencia adicional..."></textarea></div>
+      <div class="nav-btns"><button class="btn btn-ghost" onclick="goSec(5)">← Anterior</button><button class="btn btn-blue" onclick="submitSurvey()" style="padding:12px 28px;font-size:.95rem;font-weight:600">Enviar cuestionario ✓</button></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══ RESULT ══ -->
+<div class="screen" id="screen-result">
+  <div class="survey-layout">
+    <div class="result-hero">
+      <div class="result-title">Tu perfil formativo</div>
+      <div class="result-sub" id="res-sub"></div>
+    </div>
+    <div class="result-body" id="res-body"></div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding-bottom:2rem">
+      <button class="btn btn-ghost" onclick="goScreen('login')">Volver al inicio</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ADMIN ══ -->
+<div class="screen" id="screen-admin">
+  <div class="admin-wrap">
+    <div class="admin-header">
+      <div class="admin-title">Panel de Administrador <span style="font-size:.85rem;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:400">DNA 2025–2026</span></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-outline btn-sm" onclick="exportCSV()">↓ Exportar CSV</button>
+        <button class="btn btn-ghost btn-sm" onclick="goScreen('login')">← Salir</button>
+      </div>
+    </div>
+    <div class="stats-row" id="adm-stats"></div>
+    <div class="filter-row">
+      <select class="filter-sel" id="filt-u" onchange="renderTable()">
+      <option value="">Todas las unidades</option>
+        <option>VP RRHH</option><option>VP Comercial</option><option>VP Finanzas</option><option>VP Cadena de Suministro</option><option>VP Operaciones</option><option>VP TI</option>
+      </select>
+      <select class="filter-sel" id="filt-n" onchange="renderTable()">
+        <option value="">Todos los niveles</option>
+        <option>Director/a</option><option>Gerente</option><option>Coordinador/a</option><option>Especialista</option><option>Analista</option><option>Trainee</option>
+      </select>
+    </div>
+    <div class="table-wrap">
+      <div class="table-head">
+        <div class="th">Correo</div>
+        <div class="th">Nombre / Puesto</div>
+        <div class="th">Unidad de negocio</div>
+        <div class="th">Nivel</div>
+        <div class="th">Interés prom.</div>
+        <div class="th">Fecha</div>
+      </div>
+      <div id="adm-table"></div>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-bg" id="modal-bg" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-head-title" id="modal-title">Detalle</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<!-- ADMIN LOGIN MODAL -->
+<div class="modal-bg" id="adm-login-bg" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal" style="max-width:360px">
+    <div class="modal-head">
+      <div class="modal-head-title">Acceso Administrador</div>
+      <button class="modal-close" onclick="document.getElementById('adm-login-bg').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="field-label">Contraseña</label>
+        <input class="field-input" type="password" id="adm-pw" placeholder="••••••••">
+        <div class="msg-box msg-error" id="adm-err">Contraseña incorrecta.</div>
+      </div>
+      <button class="btn btn-primary" onclick="checkAdminPw()">Ingresar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORE = 'dna_2025_v2';
+const ADM_PW = 'rrhh2025';
+const SECS = 5;
+const BL_LABELS = ['Comunicaci\u00f3n y presentaci\u00f3n','Escucha activa','Hablar en p\u00fablico','Negociaci\u00f3n','Trabajo en equipo','Gesti\u00f3n del tiempo','Toma de decisiones','Adaptaci\u00f3n al cambio','Resoluci\u00f3n de problemas','Inteligencia emocional','Liderazgo de equipos','Coaching','Planificaci\u00f3n estrat\u00e9gica','Gesti\u00f3n del cambio','Cultura y clima laboral'];
+
+var ced = '';
+
+function loadAll() { try { return JSON.parse(localStorage.getItem(STORE)||'{}'); } catch(e) { return {}; } }
+function saveAll(d) { localStorage.setItem(STORE, JSON.stringify(d)); }
+
+function goScreen(id) {
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById('screen-'+id).classList.add('active');
+  document.getElementById('prog-wrap').style.display = (id==='survey') ? 'block' : 'none';
+  if (id==='admin') initAdmin();
+  window.scrollTo(0,0);
+}
+
+function doLogin() {
+  var v = document.getElementById('inp-ced').value.trim().toLowerCase();
+  var eErr = document.getElementById('msg-error');
+  var eWarn = document.getElementById('msg-warn');
+  eErr.style.display = 'none';
+  eWarn.style.display = 'none';
+  if (!v || v.indexOf('@farmatodo.com') === -1) { eErr.style.display = 'block'; return; }
+  ced = v;
+  var all = loadAll();
+  if (all[v]) {
+    eWarn.style.display = 'block';
+    var d = all[v];
+    var fields = ['f-nombre','f-unidad','f-nivel','f-puesto'];
+    var keys   = ['nombre','unidad','nivel','puesto'];
+    for (var i=0; i<fields.length; i++) {
+      var el = document.getElementById(fields[i]);
+      if (el && d[keys[i]]) el.value = d[keys[i]];
+    }
+  }
+  document.getElementById('f-cedula').value = v;
+  document.getElementById('nav-right').innerHTML = '<span class="nav-cedula">C\u00e9dula: '+v+'</span>';
+  setTimeout(function(){ goScreen('survey'); goSec(1); }, all[v] ? 600 : 0);
+}
+
+function goSec(n) {
+  document.querySelectorAll('.ssec').forEach(function(s){ s.style.display='none'; });
+  var t = document.getElementById('sec-'+n);
+  if (t) t.style.display = 'block';
+  updateProg(n);
+  window.scrollTo(0,0);
+}
+
+function updateProg(n) {
+  var lbs = ['','Datos personales','Inter\u00e9s en formaci\u00f3n','Preferencias de aprendizaje','Objetivos de desarrollo','Sugerencias y compromisos'];
+  var html = '';
+  for (var i=1; i<=SECS; i++) html += '<div class="prog-step'+(i<n?' done':i===n?' active':'')+'"></div>';
+  document.getElementById('prog-steps').innerHTML = html;
+  document.getElementById('prog-label').textContent = 'Secci\u00f3n '+n+' de '+SECS+'  \u00b7  '+lbs[n];
+}
+
+function buildLikert(cid, gkey, items, sL, sR) {
+  var c = document.getElementById(cid); if (!c) return;
+  var w = document.createElement('div'); w.className = 'likert-block';
+  var hd = '<div class="likert-head"><div class="likert-head-label">Tema de formaci\u00f3n</div>';
+  for (var x=1; x<=5; x++) hd += '<div class="likert-head-num">'+x+'</div>';
+  hd += '</div><div class="likert-scale-row"><span>'+(sL||'')+'</span><span>'+(sR||'')+'</span></div>';
+  w.innerHTML = hd;
+  items.forEach(function(item, i) {
+    var r = document.createElement('div'); r.className = 'likert-row';
+    var inner = '<div class="likert-item-label">'+item+'</div>';
+    for (var n=1; n<=5; n++) inner += '<div class="likert-cell"><input type="radio" class="likert-radio" name="'+gkey+'_'+i+'" value="'+n+'"></div>';
+    r.innerHTML = inner;
+    w.appendChild(r);
+  });
+  c.appendChild(w);
+}
+
+function buildCheckGrid(cid, items, maxSel) {
+  var c = document.getElementById(cid); if (!c) return;
+  items.forEach(function(item) {
+    var el = document.createElement('div'); el.className = 'check-item'; el.dataset.v = item;
+    el.innerHTML = '<div class="check-box"><svg width="10" height="8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="check-label">'+item+'</span>';
+    el.onclick = function() {
+      var checked = el.classList.contains('checked');
+      if (!checked && maxSel && c.querySelectorAll('.check-item.checked').length >= maxSel) return;
+      el.classList.toggle('checked');
+    };
+    c.appendChild(el);
+  });
+}
+
+function buildRadio(cid, items) {
+  var c = document.getElementById(cid); if (!c) return;
+  items.forEach(function(item) {
+    var el = document.createElement('div'); el.className = 'radio-item';
+    el.innerHTML = '<div class="radio-dot"></div><span class="radio-label">'+item+'</span>';
+    el.onclick = function() {
+      c.querySelectorAll('.radio-item').forEach(function(x){ x.classList.remove('selected'); });
+      el.classList.add('selected');
+    };
+    c.appendChild(el);
+  });
+}
+
+function buildHours() {
+  var c = document.getElementById('hg-horas'); if (!c) return;
+  ['1\u20134 hrs','5\u20138 hrs','9\u201312 hrs','13\u201320 hrs','M\u00e1s de 20 hrs'].forEach(function(h) {
+    var b = document.createElement('button'); b.className = 'hour-btn'; b.textContent = h;
+    b.onclick = function() {
+      document.querySelectorAll('.hour-btn').forEach(function(x){ x.classList.remove('selected'); });
+      b.classList.add('selected');
+    };
+    c.appendChild(b);
+  });
+}
+
+function gL(gkey, n) {
+  var r = {};
+  for (var i=0; i<n; i++) {
+    var ch = document.querySelector('input[name="'+gkey+'_'+i+'"]:checked');
+    r[i] = ch ? parseInt(ch.value) : null;
+  }
+  return r;
+}
+function gChecked(cid) { return Array.from(document.querySelectorAll('#'+cid+' .check-item.checked')).map(function(e){ return e.dataset.v; }); }
+function gRadio(cid) { var s = document.querySelector('#'+cid+' .radio-item.selected'); return s ? s.querySelector('.radio-label').textContent : ''; }
+function gHours() { var s = document.querySelector('.hour-btn.selected'); return s ? s.textContent : ''; }
+function gVal(id) { var el = document.getElementById(id); return (el && el.value) ? el.value : ''; }
+
+function collect() {
+  return {
+    cedula: ced, nombre: gVal('f-nombre'), unidad: gVal('f-unidad'),
+    nivel: gVal('f-nivel'), puesto: gVal('f-puesto'),
+    lt_interp: gL('interp',5), lt_gest: gL('gest',5), lt_lider: gL('lider',5),
+    reto: gVal('f-reto'),
+    modalidades: gChecked('cg-modal'), duracion: gRadio('rl-dur'),
+    disponibilidad: gChecked('cg-disp'), horas: gHours(), obstaculos: gChecked('cg-obs'),
+    objetivo: gRadio('rl-obj'), brechas: gVal('f-brechas'),
+    comentarios: gVal('f-coment'),
+    fecha: new Date().toLocaleDateString('es',{day:'2-digit',month:'2-digit',year:'numeric'}),
+    ts: Date.now()
+  };
+}
+
+function scores(d) {
+  function avg(groups) {
+    var all = [];
+    groups.forEach(function(g){ if(!g) return; Object.values(g).forEach(function(v){ if(v!=null) all.push(v); }); });
+    return all.length ? all.reduce(function(a,b){return a+b;},0)/all.length : null;
+  }
+  return { bl: avg([d.lt_interp,d.lt_gest,d.lt_lider]) };
+}
+
+function gaps(d) {
+  var ab = Object.assign({}, d.lt_interp||{}, d.lt_gest||{}, d.lt_lider||{});
+  var bg = Object.entries(ab).filter(function(e){ return e[1]!=null && e[1]>=4; }).map(function(e){ return BL_LABELS[+e[0]]||'Tema de inter\u00e9s'; });
+  return { bg: bg };
+}
+
+function submitSurvey() {
+  var data = collect();
+  var all = loadAll(); all[ced] = data; saveAll(all);
+  showResult(data);
+}
+
+function showResult(d) {
+  var sc = scores(d); var gp = gaps(d);
+  document.getElementById('res-sub').textContent = (d.nombre||'Colaborador/a')+' \u00b7 '+(d.nivel||'')+' \u00b7 '+(d.unidad||'');
+  function fmt(v){ return v!=null ? v.toFixed(1) : '--'; }
+  function pct(v){ return v!=null ? Math.round((v/5)*100) : 0; }
+  var h = '<div class="metrics-row">'
+    +'<div class="metric-card"><div class="metric-val">'+fmt(sc.bl)+'<span>/5</span></div><div class="score-bar-wrap"><div class="score-bar-fill" style="width:'+pct(sc.bl)+'%;background:#1a9e6a"></div></div><div class="metric-label">Inter\u00e9s promedio</div></div>'
+    +'<div class="metric-card"><div class="metric-val">'+fmt(sc.prog)+'<span>/5</span></div><div class="score-bar-wrap"><div class="score-bar-fill" style="width:'+pct(sc.prog)+'%;background:#F5A623"></div></div><div class="metric-label">Satisfacci\u00f3n programa</div></div>'
+    +'<div class="metric-card"><div class="metric-val">'+gp.bg.length+'</div><div class="metric-label">Temas prioritarios</div></div>'
+    +'</div>';
+  if (gp.bg.length) h += '<div class="gaps-section"><div class="gaps-title"><span class="gap-dot" style="background:#1a9e6a"></span>Formaciones de mayor inter\u00e9s</div><div class="tag-cloud">'+gp.bg.map(function(g){ return '<span class="tag tag-green">'+g+'</span>'; }).join('')+'</div></div>';
+  if (d.modalidades && d.modalidades.length) h += '<div class="gaps-section"><div class="gaps-title"><span class="gap-dot" style="background:#418FDE"></span>Modalidades preferidas</div><div class="tag-cloud">'+d.modalidades.map(function(m){ return '<span class="tag tag-blue">'+m+'</span>'; }).join('')+'</div></div>';
+  if (d.objetivo) h += '<div class="gaps-section"><div class="gaps-title"><span class="gap-dot" style="background:#1a9e6a"></span>Objetivo de desarrollo</div><div class="tag-cloud"><span class="tag tag-green">'+d.objetivo+'</span></div></div>';
+  h += '<div class="thankyou-box">Respuestas registradas el '+d.fecha+'.<br>El \u00e1rea de Formaci\u00f3n y Desarrollo las analizar\u00e1 para el plan formativo '+(new Date().getFullYear()+1)+'.<br><strong style="color:rgba(255,255,255,.9)">\u00a1Gracias por tu participaci\u00f3n!</strong></div>';
+  document.getElementById('res-body').innerHTML = h;
+  goScreen('result');
+}
+
+function openAdminLogin() {
+  document.getElementById('adm-pw').value = '';
+  document.getElementById('adm-err').style.display = 'none';
+  document.getElementById('adm-login-bg').classList.add('open');
+}
+function checkAdminPw() {
+  if (document.getElementById('adm-pw').value === ADM_PW) {
+    document.getElementById('adm-login-bg').classList.remove('open'); goScreen('admin');
+  } else { document.getElementById('adm-err').style.display = 'block'; }
+}
+function closeModal() { document.getElementById('modal-bg').classList.remove('open'); }
+
+function initAdmin() {
+  var all = loadAll(); var recs = Object.values(all);
+  var units = Array.from(new Set(recs.map(function(r){ return r.unidad; }).filter(Boolean)));
+  var nivs  = Array.from(new Set(recs.map(function(r){ return r.nivel; }).filter(Boolean)));
+  var hi = recs.filter(function(r){ var s=scores(r); return s.bl!=null&&s.bl>=4; }).length;
+  document.getElementById('adm-stats').innerHTML =
+    '<div class="stat-card"><div class="stat-val">'+recs.length+'</div><div class="stat-label">Respuestas totales</div></div>'+
+    '<div class="stat-card" style="border-color:#1a9e6a"><div class="stat-val">'+units.length+'</div><div class="stat-label">VPs representadas</div></div>'+
+    '<div class="stat-card" style="border-color:#F5A623"><div class="stat-val">'+nivs.length+'</div><div class="stat-label">Niveles de cargo</div></div>'+
+    '<div class="stat-card" style="border-color:#418FDE"><div class="stat-val">'+hi+'</div><div class="stat-label">Con inter\u00e9s alto</div></div>';
+  renderTable();
+}
+
+function renderTable() {
+  var all = loadAll(); var recs = Object.values(all);
+  var fu = document.getElementById('filt-u').value;
+  var fn = document.getElementById('filt-n').value;
+  if (fu) recs = recs.filter(function(r){ return r.unidad===fu; });
+  if (fn) recs = recs.filter(function(r){ return r.nivel===fn; });
+  recs.sort(function(a,b){ return (b.ts||0)-(a.ts||0); });
+  var tb = document.getElementById('adm-table');
+  if (!recs.length) { tb.innerHTML='<div class="empty-state"><div style="font-size:2rem;opacity:.3;margin-bottom:.75rem">\ud83d\udccb</div>No hay respuestas registradas a\u00fan.</div>'; return; }
+  tb.innerHTML = recs.map(function(r) {
+    var s=scores(r); var t=s.bl!=null?s.bl.toFixed(1):'\u2014';
+    var col=s.bl!=null&&s.bl>=4?'color:#1a9e6a;font-weight:600':'';
+    return '<div class="table-row" onclick="openDetail(\''+r.cedula+'\')">'+
+      '<div class="td" style="font-weight:600;font-size:.75rem">'+r.cedula+'</div>'+
+      '<div class="td"><div>'+(r.nombre||'\u2014')+'</div><div class="td-muted">'+(r.puesto||'')+'</div></div>'+
+      '<div class="td td-muted">'+(r.unidad||'\u2014')+'</div>'+
+      '<div class="td"><span class="badge badge-navy">'+(r.nivel||'\u2014')+'</span></div>'+
+      '<div class="td" style="'+col+'">'+t+'</div>'+
+      '<div class="td td-muted">'+(r.fecha||'\u2014')+'</div></div>';
+  }).join('');
+}
+
+function openDetail(cedula) {
+  var d = loadAll()[cedula]; if (!d) return;
+  var sc = scores(d); var gp = gaps(d);
+  function fmt(v){ return v!=null ? v.toFixed(1)+'/5' : '\u2014'; }
+  function dr(k,v){ if(!v) return ''; return '<div class="detail-row"><div class="detail-key">'+k+'</div><div class="detail-val">'+v+'</div></div>'; }
+  var h = '<div class="modal-section"><div class="modal-sec-title">Datos</div>'+dr('C\u00e9dula',cedula)+dr('Unidad',d.unidad)+dr('Nivel',d.nivel)+dr('Puesto',d.puesto)+dr('Fecha',d.fecha)+'</div>';
+  h += '<div class="modal-section"><div class="modal-sec-title">\u00cdndice de inter\u00e9s</div>'+dr('Inter\u00e9s promedio en formaci\u00f3n',fmt(sc.bl))+'</div>';
+  if (gp.bg.length) h += '<div class="modal-section"><div class="modal-sec-title">Formaciones prioritarias (4\u20135)</div><div class="chip-list">'+gp.bg.map(function(g){ return '<span class="chip" style="background:#eaf7f1;border-color:#a3dccc;color:#0e6047">'+g+'</span>'; }).join('')+'</div></div>';
+  h += '<div class="modal-section"><div class="modal-sec-title">Preferencias</div>'+(d.modalidades&&d.modalidades.length?dr('Modalidades',d.modalidades.join(', ')):'')+dr('Duraci\u00f3n ideal',d.duracion)+dr('Horas al mes',d.horas)+(d.disponibilidad&&d.disponibilidad.length?dr('Disponibilidad',d.disponibilidad.join(', ')):'')+'</div>';
+  h += '<div class="modal-section"><div class="modal-sec-title">Objetivos</div>'+dr('Objetivo principal',d.objetivo)+(d.certif?dr('Programas de inter\u00e9s',d.certif):'')+(d.brechas?dr('Necesidades del equipo',d.brechas):'')+'</div>';
+  if (d.facilitar && d.facilitar.indexOf('No')!==0) h += '<div class="modal-section"><div class="modal-sec-title">Facilitador interno</div>'+dr('Disposici\u00f3n',d.facilitar)+(d.facil_tema?dr('Tema',d.facil_tema):'')+'</div>';
+  if (d.mejoras||d.sugerencias||d.comentarios) h += '<div class="modal-section"><div class="modal-sec-title">Comentarios</div>'+(d.mejoras?dr('Mejoras al programa',d.mejoras):'')+(d.comentarios?dr('Comentarios',d.comentarios):'')+'</div>';
+  document.getElementById('modal-title').textContent = d.nombre||('C\u00e9dula '+cedula);
+  document.getElementById('modal-body').innerHTML = h;
+  document.getElementById('modal-bg').classList.add('open');
+}
+
+function exportCSV() {
+  var recs = Object.values(loadAll());
+  if (!recs.length) { alert('No hay respuestas para exportar.'); return; }
+  var heads = ['cedula','nombre','unidad','nivel','puesto','fecha','idx_interes','objetivo','horas','modalidades','duracion','obstaculos','brechas','comentarios'];
+  var rows = recs.map(function(r) {
+    var s = scores(r);
+    var row = Object.assign({}, r, { idx_interes: s.bl!=null?s.bl.toFixed(2):'' });
+    return heads.map(function(h) {
+      var v = Array.isArray(row[h]) ? row[h].join('|') : (row[h]||'');
+      return '"'+String(v).replace(/"/g,'""')+'"';
+    }).join(',');
+  });
+  var csv = [heads.join(',')].concat(rows).join('\n');
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'}));
+  a.download = 'DNA_Respuestas_2025-2026.csv'; a.click();
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('btn-login').onclick = doLogin;
+  document.getElementById('inp-ced').onkeydown = function(e){ if(e.key==='Enter') doLogin(); };
+  document.getElementById('adm-pw').onkeydown = function(e){ if(e.key==='Enter') checkAdminPw(); };
+  buildLikert('lt-interp','interp',['Comunicaci\u00f3n efectiva y presentaci\u00f3n de ideas','Escucha activa y empat\u00eda en el trabajo','Hablar en p\u00fablico y facilitar reuniones','Negociaci\u00f3n y manejo de conversaciones dif\u00edciles','Trabajo en equipo y colaboraci\u00f3n entre \u00e1reas'],'No me interesa / no lo necesito','Muy interesado/a, es prioridad');
+  buildLikert('lt-gest','gest',['Gesti\u00f3n del tiempo y organizaci\u00f3n personal','Toma de decisiones y pensamiento cr\u00edtico','Adaptaci\u00f3n al cambio e incertidumbre','Creatividad y resoluci\u00f3n de problemas','Inteligencia emocional y manejo del estr\u00e9s'],'No me interesa / no lo necesito','Muy interesado/a, es prioridad');
+  buildLikert('lt-lider','lider',['Liderazgo de equipos y motivaci\u00f3n','Coaching y acompa\u00f1amiento al equipo','Planificaci\u00f3n estrat\u00e9gica y visi\u00f3n de negocio','Gesti\u00f3n del cambio organizacional','Construcci\u00f3n de cultura y clima laboral'],'No me interesa / no lo necesito','Muy interesado/a, es prioridad');
+  buildCheckGrid('cg-modal',['E-learning / cursos online autogestionados','Aula presencial con instructor','Workshop pr\u00e1ctico presencial','Blended (online + presencial)','Mentoring o coaching individual','Comunidades de pr\u00e1ctica internas','Microlearning en app m\u00f3vil','Benchmark / visitas a otras empresas','Webinar en vivo online','Diplomado / programa externo'],3);
+  buildCheckGrid('cg-disp',['Ma\u00f1anas entre semana','Tardes entre semana','D\u00edas de capacitaci\u00f3n designados','Fines de semana (ma\u00f1ana)','Flexible: sin preferencia'],0);
+  buildCheckGrid('cg-obs',['Carga operativa muy elevada','Horarios poco flexibles','Contenidos poco relevantes al puesto','Plataformas dif\u00edciles de usar','Falta de seguimiento post-formaci\u00f3n','Cursos demasiado extensos o te\u00f3ricos','Poca comunicaci\u00f3n de la oferta disponible','Sin obst\u00e1culos relevantes'],0);
+  buildRadio('rl-dur',['30\u201360 minutos (microlearning)','2\u20133 horas (taller enfocado)','D\u00eda completo (workshop intensivo)','Programa de varios d\u00edas o semanas','Me adapto a cualquier formato']);
+  buildRadio('rl-obj',['Profundizar mi especialidad actual','Prepararme para ascender al siguiente nivel','Desarrollar capacidades de liderazgo','Mejorar mi desempe\u00f1o en indicadores clave','Ampliarme hacia otra unidad de negocio','Actualizaci\u00f3n en herramientas digitales y tecnolog\u00eda','Cumplir requisitos regulatorios o de certificaci\u00f3n']);
+  buildHours();
+});
+</script>
+</body>
+</html>
